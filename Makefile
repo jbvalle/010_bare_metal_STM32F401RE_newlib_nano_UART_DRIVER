@@ -46,7 +46,7 @@ mkdeb:
 
 flash: FORCE
 	openocd -f $(OPENOCD_INTERFACE) -f $(OPENOCD_TARGET) &
-	gdb-multiarch $(TARGET) 
+	gdb-multiarch $(TARGET) -x $(SUP_DIR)/flash.gdb
 
 debug: FORCE
 	openocd -f $(OPENOCD_INTERFACE) -f $(OPENOCD_TARGET) &
