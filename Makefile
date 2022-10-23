@@ -17,7 +17,7 @@ LD := $(wildcard $(SUP_DIR)/*.ld)
 
 # FLAGS
 MARCH = cortex-m4
-CFLAGS = -g -Wall -mcpu=$(MARCH) -mthumb -mfloat-abi=soft 
+CFLAGS = -g -Wall -mcpu=$(MARCH) -mthumb -mfloat-abi=soft -I$(INC_DIR)
 LFLAGS = --specs=nano.specs -T $(LD) -Wl,-Map=$(DEB_DIR)/main.map
 
 #PATHS
