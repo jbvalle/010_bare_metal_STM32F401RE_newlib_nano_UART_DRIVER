@@ -45,11 +45,11 @@ mkdeb:
 	mkdir -p $(DEB_DIR)
 
 flash: FORCE
-	openocd -f $(OPENOCD_TARGET) -f $(OPENOCD_INTERFACE) &
-	gdb-multiarch $(TARGET) -x $(SUP_DIR)/flash.gdb
+	openocd -f $(OPENOCD_INTERFACE) -f $(OPENOCD_TARGET) &
+	gdb-multiarch $(TARGET) 
 
 debug: FORCE
-	openocd -f $(OPENOCD_TARGET) -f $(OPENOCD_INTERFACE) &
+	openocd -f $(OPENOCD_INTERFACE) -f $(OPENOCD_TARGET) &
 	gdb-multiarch $(TARGET) -x $(SUP_DIR)/debug.gdb
 
 edit: FORCE

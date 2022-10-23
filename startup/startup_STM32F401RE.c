@@ -10,7 +10,7 @@ extern uint32_t _ebss;
 
 /** Prototypes **/
 extern int main(void);
-extern void __lib_init_array(void);
+extern void __libc_init_array(void);
 
 void Reset_handler          (void);
 void NMI_handler            (void)__attribute__((weak, alias("Default_handler")));
@@ -199,7 +199,7 @@ void Reset_handler(void){
         *bss_ptr++ = 0;
     }
     /** Call LIBC INIT **/
-    __lib_init_array();
+    __libc_init_array();
 
     /** CALL main() **/
     main();
