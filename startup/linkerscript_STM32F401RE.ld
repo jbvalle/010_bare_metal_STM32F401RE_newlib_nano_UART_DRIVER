@@ -25,6 +25,7 @@ SECTIONS
         . = ALIGN(4);
         *(.text)
         *(.text.*)
+        *(.eh_frame)
         *(.init)
         *(.fini)
         *(.ARM)
