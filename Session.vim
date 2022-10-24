@@ -14,6 +14,7 @@ $argadd Makefile
 tabnew
 tabnew
 tabnew
+tabnew
 tabrewind
 edit Makefile
 argglobal
@@ -92,11 +93,32 @@ keepjumps exe s:l
 normal! zt
 keepjumps 1
 normal! 0
+tabnext
+edit src/syscalls.c
+argglobal
+balt src/syscalls.c
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 1 - ((0 * winheight(0) + 21) / 42)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 1
+normal! 0
 tabnext 4
-badd +0 Makefile
-badd +1 startup/linkerscript_STM32F401RE.ld
-badd +0 startup/startup_STM32F401RE.c
+badd +1 Makefile
+badd +1 startup/startup_STM32F401RE.c
 badd +1 src/main.c
+badd +1 src/syscalls.c
+badd +1 startup/linkerscript_STM32F401RE.ld
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
