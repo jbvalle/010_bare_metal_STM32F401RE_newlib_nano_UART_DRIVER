@@ -115,6 +115,8 @@ void UART_CONFIG_init(void){
     USART2->USART_CR1 &= ~(1 << 12);
     // enable Transmitter
     USART2->USART_CR1 |=  (1 << 3);
+    // enable Reciever
+    USART2->USART_CR1 |=  (1 << 2);
 
     /** SET CR2 -> CR[13:12] Set 00 for 1 STOP BIT **/
     USART2->USART_CR2 &= ~(3 << 12);
