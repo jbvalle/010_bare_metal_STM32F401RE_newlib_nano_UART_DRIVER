@@ -56,6 +56,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <sys/times.h>
+#include "peripherals.h"
 
 /* Variables */
 //#undef errno
@@ -65,14 +66,79 @@ extern int __io_getchar(void) __attribute__((weak));
 
 register char * stack_ptr asm("sp");
 
+
 char *__env[1] = { 0 };
 char **environ = __env;
 
+/**************************************************/
+/** STM32F401RE Specific Hardware Initialization **/
+/**************************************************/
+
+void UART_GPIO_init(void){
+
+    /** Enable CLOCK for GPIOA **/
+    RCC->RCC_AHB1ENR |= 1;
+
+    /** SET AF07 for PA2 **/
+    GPIOA->GPIOx_AFRL &= ~(0xF << (2 * 4));
+    GPIOA->GPIOx_AFRL |=  (7   << (2 * 4));
+
+    /** SET AF07 for PA3 **/
+    GPIOA->GPIOx_AFRL &= ~(0xF << (3 * 4));
+    GPIOA->GPIOx_AFRL |=  (7   << (3 * 4));
+
+    /** Set AF Mode for PA2 **/
+    GPIOA->GPIOx_MODER &= ~(3 << (2 * 2));
+    GPIOA->GPIOx_MODER |=  (2 << (2 * 2));
+
+    /** Set AF Mode for PA3 **/
+    GPIOA->GPIOx_MODER &= ~(3 << (3 * 2));
+    GPIOA->GPIOx_MODER |=  (2 << (3 * 2));
+}
+
+void UART_CONFIG_init(void){
+
+    /*******************/
+    /** Configure CR1 **/
+    /*******************/
+
+    /** Enable CLOCK for USART2 **/
+    RCC->RCC_APB1ENR |= (1 << 17);
+
+    /** Set Baud Rate Register **/
+    USART2->USART_BRR &= ~0xFFFF;
+    USART2->USART_BRR = 0x683;
+
+    // SET OVER8=0
+    USART2->USART_CR1 &= ~(1 << 15);
+    // Set M to 8len
+    USART2->USART_CR1 &= ~(1 << 12);
+    // enable Transmitter
+    USART2->USART_CR1 |=  (1 << 3);
+
+    /** SET CR2 -> CR[13:12] Set 00 for 1 STOP BIT **/
+    USART2->USART_CR2 &= ~(3 << 12);
+
+    /** RESET CR3 -> Disable flow control RTS CTS **/
+    USART2->USART_CR3 = 0;
+
+    /** Enable UART CR1 **/
+    USART2->USART_CR1 |=  (1 << 13);
+
+}
+
+void UART_write(int c){
+    while(!(USART2->USART_SR & (1 << 7)));
+    USART2->USART_DR = (c & 0xFF);
+}
+/**************************************************/
 
 
 /* Functions */
 void initialise_monitor_handles()
 {
+    UART_GPIO_init();
+    UART_CONFIG_init();
 }
 
 int _getpid(void)
@@ -110,8 +176,9 @@ __attribute__((weak)) int _write(int file, char *ptr, int len)
 
 	for (DataIdx = 0; DataIdx < len; DataIdx++)
 	{
-		__io_putchar(*ptr++);
+		//__io_putchar(*ptr++);
 		//ITM_SendChar(*ptr++);
+        UART_write(*ptr++);
 	}
 	return len;
 }
@@ -211,3 +278,5 @@ caddr_t _sbrk(int incr)
 
 	return (caddr_t) prev_heap_end;
 }
+
+
