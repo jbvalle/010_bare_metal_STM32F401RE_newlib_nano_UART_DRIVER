@@ -18,6 +18,6 @@ int main(void){
     initialise_monitor_handles();
 
     for(;;){
-        printf("Hello World\r\n");
+        printf("Hello World\n");
     }
 }
