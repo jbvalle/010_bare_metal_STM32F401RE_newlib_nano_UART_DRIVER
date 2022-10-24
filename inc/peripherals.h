@@ -117,5 +117,6 @@ typedef struct EXTI_t{
 extern RCC_t * const RCC;
 extern GPIOx_t * const GPIOA;
 extern USART_t * const USART2;
+extern NVIC_t * const NVIC;
 
 #endif
