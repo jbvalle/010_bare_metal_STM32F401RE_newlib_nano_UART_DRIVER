@@ -680,6 +680,7 @@ LOAD /opt/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/12.2.0/thumb/v7e-m/nofp
  .rodata.all_implied_fbits
                 0x0800342c       0x24 /opt/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/12.2.0/thumb/v7e-m/nofp/crtend.o
                 0x08003450                        . = ALIGN (0x4)
+                0x08003450                        _sidata = LOADADDR (.data)
 
 .glue_7         0x08003450        0x0
  .glue_7        0x08003450        0x0 linker stubs
@@ -698,8 +699,6 @@ LOAD /opt/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/12.2.0/thumb/v7e-m/nofp
 
 .rel.dyn        0x08003450        0x0
  .rel.iplt      0x08003450        0x0 /opt/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/12.2.0/thumb/v7e-m/nofp/crtbegin.o
-                0x08003450                        . = ALIGN (0x4)
-                0x08003450                        _sidata = .
 
 .data           0x20000000       0x6c load address 0x08003450
                 0x20000000                        . = ALIGN (0x4)

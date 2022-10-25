@@ -35,8 +35,7 @@ SECTIONS
         . = ALIGN(4);
     }> FLASH
 
-    . = ALIGN(4);
-    _sidata = .;
+    _sidata = LOADADDR(.data);
     
     .data :
     {
